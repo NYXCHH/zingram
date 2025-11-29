@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zingram</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Экран входа/регистрации -->
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-container">
+            <div class="logo-animation">
+                <div class="logo-circle"></div>
+                <h1 class="app-name">Zingram</h1>
+            </div>
+            
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="ru">Русский</option>
+                    <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="ar">العربية</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="pt">Português</option>
+                </select>
+            </div>
+
+            <div class="auth-form" id="loginForm">
+                <h2 data-i18n="login">Вход</h2>
+                <input type="tel" id="loginPhone" placeholder="+7 (999) 123-45-67" data-i18n-placeholder="phone">
+                <input type="password" id="loginPassword" placeholder="Пароль" data-i18n-placeholder="password">
+                <button id="loginBtn" data-i18n="loginBtn">Войти</button>
+                <p class="switch-auth" data-i18n="noAccount">Нет аккаунта? <span id="showRegister">Зарегистрироваться</span></p>
+            </div>
+
+            <div class="auth-form hidden" id="registerForm">
+                <h2 data-i18n="register">Регистрация</h2>
+                <input type="text" id="registerName" placeholder="Имя" data-i18n-placeholder="name">
+                <input type="text" id="registerUsername" placeholder="@username" data-i18n-placeholder="username">
+                <input type="tel" id="registerPhone" placeholder="+7 (999) 123-45-67" data-i18n-placeholder="phone">
+                <input type="password" id="registerPassword" placeholder="Пароль" data-i18n-placeholder="password">
+                <button id="registerBtn" data-i18n="registerBtn">Зарегистрироваться</button>
+                <p class="switch-auth" data-i18n="haveAccount">Уже есть аккаунт? <span id="showLogin">Войти</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной экран мессенджера -->
+    <div id="messengerScreen" class="messenger-container hidden">
+        <div class="sidebar">
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/50" alt="Avatar" class="avatar" id="userAvatar">
+                <div class="user-info">
+                    <div class="user-name" id="userName">User</div>
+                    <div class="user-username" id="userUsername">@username</div>
+                </div>
+                <button id="logoutBtn" class="logout-btn" data-i18n="logout">Выйти</button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск по @username или номеру" data-i18n-placeholder="search">
+                <button id="addContactBtn" class="add-contact-btn">+</button>
+            </div>
+
+            <div class="search-results hidden" id="searchResults"></div>
+            
+            <div class="chat-list" id="chatList">
+                <p class="empty-state" data-i18n="noChats">Нет чатов. Найдите друзей!</p>
+            </div>
+        </div>
+
+        <div class="chat-window">
+            <div class="chat-header">
+                <img src="https://via.placeholder.com/50" alt="Avatar" class="avatar">
+                <div class="chat-title" id="chatTitle" data-i18n="selectChat">Выберите чат</div>
+                <div class="chat-actions">
+                    <button id="voiceCallBtn" class="icon-btn" title="Голосовой звонок">📞</button>
+                    <button id="videoCallBtn" class="icon-btn" title="Видеозвонок">📹</button>
+                    <button id="settingsBtn" class="icon-btn" title="Настройки">⚙️</button>
+                </div>
+            </div>
+            <div class="message-container" id="messageContainer"></div>
+            <div class="input-area">
+                <button id="attachBtn" class="icon-btn">📎</button>
+                <button id="voiceRecordBtn" class="icon-btn">🎤</button>
+                <input type="text" id="messageInput" placeholder="Введите сообщение..." data-i18n-placeholder="message">
+                <button id="emojiBtn" class="icon-btn">😊</button>
+                <button id="sendButton" data-i18n="send">Отправить</button>
+            </div>
+        </div>
+
+        <!-- Модальное окно настроек -->
+        <div id="settingsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚙️ Настройки</h2>
+                    <button class="close-btn" id="closeSettings">✕</button>
+                </div>
+                <div class="settings-section">
+                    <h3>🎨 Тема</h3>
+                    <div class="color-picker">
+                        <label>Акцентный цвет:</label>
+                        <div class="color-options">
+                            <div class="color-option" data-color="#e53935" style="background: #e53935;"></div>
+                            <div class="color-option" data-color="#1e88e5" style="background: #1e88e5;"></div>
+                            <div class="color-option" data-color="#43a047" style="background: #43a047;"></div>
+                            <div class="color-option" data-color="#fb8c00" style="background: #fb8c00;"></div>
+                            <div class="color-option" data-color="#8e24aa" style="background: #8e24aa;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>🔊 Звук</h3>
+                    <label class="toggle-option">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span>Звуки уведомлений</span>
+                    </label>
+                </div>
+                <div class="settings-section">
+                    <h3>🔒 Приватность</h3>
+                    <label class="toggle-option">
+                        <input type="checkbox" id="onlineStatusToggle" checked>
+                        <span>Показывать статус онлайн</span>
+                    </label>
+                    <label class="toggle-option">
+                        <input type="checkbox" id="readReceiptsToggle" checked>
+                        <span>Отправлять статус прочтения</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно звонка -->
+        <div id="callModal" class="modal hidden">
+            <div class="call-container">
+                <div class="call-avatar">
+                    <img src="https://via.placeholder.com/150" alt="Avatar" id="callAvatar">
+                </div>
+                <h2 id="callName">Имя</h2>
+                <p id="callStatus">Звоним...</p>
+                <div class="call-timer hidden" id="callTimer">00:00</div>
+                
+                <div class="call-controls">
+                    <button id="muteBtn" class="call-btn">🔇</button>
+                    <button id="endCallBtn" class="call-btn end-call">📵</button>
+                    <button id="speakerBtn" class="call-btn">🔊</button>
+                </div>
+
+                <!-- Игра во время звонка -->
+                <div class="call-game hidden" id="callGame">
+                    <h3>🎮 Сыграем?</h3>
+                    <div class="game-selector">
+                        <button class="game-btn" data-game="tictactoe">Крестики-нолики</button>
+                        <button class="game-btn" data-game="chess">Шахматы</button>
+                    </div>
+                    <div id="gameBoard" class="game-board hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно файлов -->
+        <div id="fileModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📎 Отправить файл</h2>
+                    <button class="close-btn" id="closeFile">✕</button>
+                </div>
+                <div class="file-upload">
+                    <input type="file" id="fileInput" multiple>
+                    <label for="fileInput" class="file-label">
+                        📁 Выбрать файлы
+                    </label>
+                    <div id="filePreview"></div>
+                    <button id="sendFileBtn" class="btn-primary">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- Скрипты приложения -->
+    <script src="translations.js"></script>
+    <script src="features.js"></script>
+    <script src="app.js"></script>
+    <script src="client.js"></script>
+    
+    <!-- Скрытый аудио элемент для звонков -->
+    <audio id="remoteAudio" autoplay></audio>
+</body>
+</html>
